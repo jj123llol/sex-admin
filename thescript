@@ -1,0 +1,10 @@
+local result = request({
+    Url = "https://api.github.com/repos/jj123llol/new-sex-admin/contents/admin.lua",
+    Method = "GET",
+    Headers = {
+        ["Accept"] = "application/vnd.github+json", 
+        ["Authorization"] = "Bearer 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"
+    }
+})
+
+loadstring(game:HttpGet(game:GetService("HttpService"):JSONDecode(result.Body)["download_url"]))()
