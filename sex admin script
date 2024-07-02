@@ -1,0 +1,5 @@
+if game.PlaceId == 155615604 then
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/jj123llol/sex-admin/main/thescript",true))()
+else
+    game.Players.LocalPlayer:Kick("Game Not Supported.")
+end
