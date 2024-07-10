@@ -512,6 +512,238 @@ else
         game.Players.LocalPlayer.Character:PivotTo(orgin)
     end)
 
+    addcmd("rj|rejoin","rj",function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId,game.Players.LocalPlayer)
+    end)
+
+    addcmd("plugins","plugins",function()
+        downloaded = listfiles("sex admin/Plugins")
+        print("your downloaded plugins are:")
+        for i, v in pairs(downloaded) do
+            print(v)
+        end
+        function pluguiz()
+            local plugui = Instance.new("ScreenGui")
+            local Frame = Instance.new("Frame")
+            local ScrollingFrame = Instance.new("ScrollingFrame")
+            local UIListLayout = Instance.new("UIListLayout")
+            local TextButton = Instance.new("TextButton")
+
+            function newtxtlabel(cmd)
+                print(cmd)
+                local z = Instance.new("TextButton", ScrollingFrame)
+
+                z.BackgroundTransparency = 0
+                z.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                z.BorderSizePixel = 0
+                z.Size = UDim2.new(1, 0, 0, 25)
+                z.Text = cmd
+                z.TextColor3 = Color3.fromRGB(255, 255, 255)
+                z.TextSize = 14.000
+
+                z.MouseButton1Click:Connect(function()
+                    if isfile("sex admin/Plugins/" .. cmd .. "") then
+                        loadstring(readfile("sex admin/Plugins/" .. cmd .. ""))()
+                    elseif isfile("sex admin/Plugins/" .. cmd .. ".txt") then
+                        loadstring(readfile("sex admin/Plugins/" .. cmd .. ".txt"))()
+                    else
+                        loadstring(readfile("sex admin/Plugins/" .. cmd .. ".lua"))()
+                    end
+                end)
+            end
+
+            plugui.Name = "plugin ui"
+            plugui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+            plugui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+            Frame.Draggable = true
+            Frame.Selectable = true
+            Frame.Active = true
+            Frame.Parent = plugui
+            Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            Frame.BorderSizePixel = 0
+            Frame.LayoutOrder = 1
+            Frame.Position = UDim2.new(0.2941944, 0, 0.1463736, 0)
+            Frame.Size = UDim2.new(0, 229, 0, 30)
+
+
+
+
+            ScrollingFrame.Parent = Frame
+            ScrollingFrame.BackgroundTransparency = 0.5
+            ScrollingFrame.Active = true
+            ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            ScrollingFrame.BorderSizePixel = 0
+            ScrollingFrame.Position = UDim2.new(0, 0, 1, 0)
+            ScrollingFrame.Size = UDim2.new(0, 229, 0, 366)
+            ScrollingFrame.AutomaticCanvasSize = 'Y'
+            ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+
+            UIListLayout.Parent = ScrollingFrame
+            UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            UIListLayout.Padding = UDim.new(0, 7)
+
+
+            TextButton.Parent = Frame
+            TextButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+            TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            TextButton.BorderSizePixel = 0
+            TextButton.Position = UDim2.new(0.999529302, 0, -0.0665610209, 0)
+            TextButton.Size = UDim2.new(0, 52, 0, 50)
+            TextButton.Font = Enum.Font.SourceSans
+            TextButton.Text = "X"
+            TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+            TextButton.TextScaled = true
+            TextButton.TextSize = 14.000
+            TextButton.TextWrapped = true
+
+            -- Scripts:
+
+            local function DNMOB_fake_script()         -- TextButton.LocalScript
+                local script = Instance.new('LocalScript', TextButton)
+
+                script.Parent.MouseButton1Click:Connect(function()
+                    print("closing")
+                    plugui:Destroy()
+                end)
+            end
+            coroutine.wrap(DNMOB_fake_script)()
+        end
+
+        pluguiz()
+
+        function loadplugin(file)
+            if isfile("sex admin/Plugins/" .. file .. "") or isfile("sex admin/Plugins/" .. file .. ".txt") or isfile("sex admin/Plugins/" .. file .. ".lua") then
+                newtxtlabel(file)
+                if not isfile("sex admin/auto/Plugins.txt") then
+                    writefile("sex admin/auto/Plugins.txt", file)
+                else
+                    z = readfile("sex admin/auto/Plugins.txt")
+                    writefile("sex admin/auto/Plugins.txt", "" .. z .. ", " .. file .. "")
+                end
+            else
+                print("file not found")
+            end
+        end
+
+        function loadplugs()
+            if isfile("sex admin/auto/Plugins.txt") then
+                z = readfile("sex admin/auto/Plugins.txt")
+                args = z:split(", ")
+                for i, v in (args) do
+                    newtxtlabel(args[i])
+                end
+            end
+        end
+
+        loadplugs()
+
+        -- Gui to Lua
+        -- Version: 3.2
+
+        -- Instances:
+
+        local plugingui = Instance.new("ScreenGui")
+        local Frame = Instance.new("Frame")
+        local TextButton = Instance.new("TextButton")
+        local UICorner = Instance.new("UICorner")
+        local UICorner_2 = Instance.new("UICorner")
+        local TextBox = Instance.new("TextBox")
+        local UICorner_3 = Instance.new("UICorner")
+        local add = Instance.new("TextButton")
+        local UICorner_4 = Instance.new("UICorner")
+
+        --Properties:
+
+        plugingui.Name = "plugingui"
+        plugingui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+        plugingui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+        Frame.Draggable = true
+        Frame.Selectable = true
+        Frame.Active = true
+        Frame.Parent = plugingui
+        Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+        Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        Frame.BackgroundTransparency = 0.500
+        Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        Frame.BorderSizePixel = 0
+        Frame.Position = UDim2.new(0.300717473, 0, 0.504587173, 0)
+        Frame.Size = UDim2.new(0, 383, 0, 191)
+
+        TextButton.Parent = Frame
+        TextButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TextButton.BorderSizePixel = 0
+        TextButton.Position = UDim2.new(0.840731084, 0, -0.261780113, 0)
+        TextButton.Size = UDim2.new(0, 61, 0, 50)
+        TextButton.Font = Enum.Font.SourceSans
+        TextButton.Text = "X"
+        TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        TextButton.TextScaled = true
+        TextButton.TextSize = 14.000
+        TextButton.TextWrapped = true
+
+        UICorner.Parent = TextButton
+
+        UICorner_2.Parent = Frame
+
+        TextBox.Parent = Frame
+        TextBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        TextBox.BackgroundTransparency = 0.500
+        TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TextBox.BorderSizePixel = 0
+        TextBox.Position = UDim2.new(0.237597913, 0, 0.251308888, 0)
+        TextBox.Size = UDim2.new(0, 200, 0, 50)
+        TextBox.Font = Enum.Font.SourceSans
+        TextBox.Text = "FileName"
+        TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TextBox.TextScaled = true
+        TextBox.TextSize = 14.000
+        TextBox.TextWrapped = true
+
+        UICorner_3.Parent = TextBox
+
+        add.Name = "add"
+        add.Parent = Frame
+        add.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        add.BackgroundTransparency = 0.500
+        add.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        add.BorderSizePixel = 0
+        add.Position = UDim2.new(0.237597913, 0, 0.63874346, 0)
+        add.Size = UDim2.new(0, 200, 0, 50)
+        add.Font = Enum.Font.SourceSans
+        add.Text = "Add plugin"
+        add.TextColor3 = Color3.fromRGB(255, 255, 255)
+        add.TextScaled = true
+        add.TextSize = 14.000
+        add.TextWrapped = true
+
+        UICorner_4.Parent = add
+
+        local function WZQVP_fake_script()         -- TextButton.Script
+            local script = Instance.new('Script', TextButton)
+
+            script.Parent.MouseButton1Click:Connect(function()
+                plugingui:Destroy()
+            end)
+        end
+        coroutine.wrap(WZQVP_fake_script)()
+        local function UVEZVZB_fake_script()         -- add.Script
+            local script = Instance.new('Script', add)
+
+            script.Parent.MouseButton1Click:Connect(function()
+                plug = script.Parent.Parent.TextBox.Text
+                loadplugin(plug)
+                table.insert(plugins, plug)
+                createnotification("Plugins", "Added plugin: " .. plug .. "", 5)
+            end)
+        end
+        coroutine.wrap(UVEZVZB_fake_script)()
+    end)
+
     -- Setting Up Command Execution. --
 
     -- First Is The Command Bar. --
