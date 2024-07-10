@@ -6,12 +6,14 @@ Developed By Jude/Rev<3
 
 
 
+print("bleh")
 
 getgenv().sexadmin = {
     executed = false,
     commands = {},
     plugins = {}
 }
+
 if sexadmin.executed then return end
 sexadmin.executed = true
 
