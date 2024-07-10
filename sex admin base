@@ -1,9 +1,14 @@
+getgenv().selectedprefix = ">"              -- use ;, : , / , etc.
+
+getgenv().cmdbarprefix = Enum.KeyCode.Minus -- https://create.roblox.com/docs/en-us/reference/engine/enums/KeyCode
+
 --[[
 This Is The Base Of Sex Admin, It Makes My Life ALOT Easier.
 
 Developed By Jude/Rev<3
 ]]
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/jj123llol/My-personal-admin/main/z",true))()
 if identifyexecutor():lower():find("solara") then 
     local fti = {}
     game:GetService("RunService").Heartbeat:Connect(function()
