@@ -5,586 +5,584 @@ Developed By Jude/Rev<3
 ]]
 
 
-
-print("bleh")
-
 getgenv().sexadmin = {
     executed = false,
     commands = {},
     plugins = {}
 }
+if sexadmin.executed then
+    return
+else
+    sexadmin.executed = true
+    -- set up --
 
-if sexadmin.executed then return end
-sexadmin.executed = true
-
--- set up --
-
-if isfile("sex admin/auto/Plugins.txt") then
-    z = readfile("sex admin/auto/Plugins.txt")
-    args = z:split(", ")
-    for i, v in (args) do
-        table.insert(sexadmin.plugins, args[i])
+    if isfile("sex admin/auto/Plugins.txt") then
+        z = readfile("sex admin/auto/Plugins.txt")
+        args = z:split(", ")
+        for i, v in (args) do
+            table.insert(sexadmin.plugins, args[i])
+        end
     end
-end
 
-function getPlayer(name)
-    local targets = {}
-    local plrstbl = game.Players:GetPlayers()
-    if name == "me" then
-        return { game.Players.LocalPlayer }
-    elseif name == "others" then
-        for i, v in pairs(plrstbl) do
-            if v ~= game.Players.LocalPlayer then
+    function getPlayer(name)
+        local targets = {}
+        local plrstbl = game.Players:GetPlayers()
+        if name == "me" then
+            return { game.Players.LocalPlayer }
+        elseif name == "others" then
+            for i, v in pairs(plrstbl) do
+                if v ~= game.Players.LocalPlayer then
+                    targets[#targets + 1] = v
+                end
+            end
+        elseif name == "all" then
+            for i, v in pairs(plrstbl) do
                 targets[#targets + 1] = v
             end
-        end
-    elseif name == "all" then
-        for i, v in pairs(plrstbl) do
-            targets[#targets + 1] = v
-        end
-    elseif name == "random" then
-        for i, v in pairs(plrstbl) do
-            if v ~= game.Players.LocalPlayer then
-                return { plrstbl[math.random(1, #plrstbl)] }
+        elseif name == "random" then
+            for i, v in pairs(plrstbl) do
+                if v ~= game.Players.LocalPlayer then
+                    return { plrstbl[math.random(1, #plrstbl)] }
+                end
+            end
+        else
+            name = name:lower()
+            for i, v in pairs(game.Players:GetPlayers()) do
+                if v.Name:lower():find(name) or v.DisplayName:lower():find(name) then
+                    return { v }
+                end
             end
         end
-    else
-        name = name:lower()
-        for i, v in pairs(game.Players:GetPlayers()) do
-            if v.Name:lower():find(name) or v.DisplayName:lower():find(name) then
-                return { v }
-            end
-        end
+        return targets
     end
-    return targets
-end
 
-function createnotification(title, Warn, time)
-    task.spawn(function()
-        if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("noti") then
-            game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("noti"):Destroy()
-        end
-        local noti = Instance.new("ScreenGui")
+    function createnotification(title, Warn, time)
+        task.spawn(function()
+            if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("noti") then
+                game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("noti"):Destroy()
+            end
+            local noti = Instance.new("ScreenGui")
+            local Frame = Instance.new("Frame")
+            local UICorner = Instance.new("UICorner")
+            local main = Instance.new("TextLabel")
+            local UICorner_2 = Instance.new("UICorner")
+            local warn = Instance.new("TextLabel")
+            local UICorner_3 = Instance.new("UICorner")
+            noti.Name = "noti"
+            noti.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+            noti.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            Frame.Parent = noti
+            Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            Frame.BackgroundTransparency = 0.500
+            Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            Frame.BorderSizePixel = 0
+            Frame.Position = UDim2.new(1, -10, 0.948776782, -116)
+            Frame.Size = UDim2.new(0, 269, 0, 133)
+            UICorner.Parent = Frame
+            main.Name = "main"
+            main.Parent = Frame
+            main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            main.BackgroundTransparency = 0.500
+            main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            main.BorderSizePixel = 0
+            main.Size = UDim2.new(0, 200, 0, 50)
+            main.Font = Enum.Font.SourceSans
+            main.Text = title
+            main.TextColor3 = Color3.fromRGB(255, 255, 255)
+            main.TextScaled = true
+            main.TextSize = 14.000
+            main.TextWrapped = true
+            UICorner_2.Parent = main
+            warn.Name = "warn"
+            warn.Parent = Frame
+            warn.Text = Warn
+            warn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            warn.BackgroundTransparency = 0.500
+            warn.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            warn.BorderSizePixel = 0
+            warn.Position = UDim2.new(0, 0, 0.556391001, 0)
+            warn.Size = UDim2.new(0, 200, 0, 50)
+            warn.Font = Enum.Font.SourceSans
+            warn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            warn.TextScaled = true
+            warn.TextSize = 14.000
+            warn.TextWrapped = true
+            UICorner_3.Parent = warn
+            twe = game.TweenService:Create(Frame, TweenInfo.new(0.25),
+                { Position = UDim2.new(1, -200, 0.948776782, -116) })
+            twe:Play()
+            twe.Completed:Wait()
+            task.wait(time)
+            twe = game.TweenService:Create(Frame, TweenInfo.new(0.25),
+                { Position = UDim2.new(1, -10, 0.948776782, -116) })
+            twe:Play()
+            twe.Completed:Wait(0.5)
+            Frame:Destroy()
+        end)
+    end
+
+    function cmdgui()
+        local search = Instance.new("ScreenGui")
+        search.ResetOnSpawn = false
+        local frame = Instance.new("Frame")
         local Frame = Instance.new("Frame")
+        local Close = Instance.new("TextButton")
         local UICorner = Instance.new("UICorner")
-        local main = Instance.new("TextLabel")
+        local background = Instance.new("Frame")
         local UICorner_2 = Instance.new("UICorner")
-        local warn = Instance.new("TextLabel")
+        local ScrollingFrame = Instance.new("ScrollingFrame")
+        local UIListLayout = Instance.new("UIListLayout")
+        local TextLabel = Instance.new("TextLabel")
+        local USER = Instance.new("TextLabel")
+        local NAME = Instance.new("TextLabel")
         local UICorner_3 = Instance.new("UICorner")
-        noti.Name = "noti"
-        noti.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-        noti.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-        Frame.Parent = noti
+
+        function newtxtlabel(cmd)
+            print(cmd)
+
+            local z = Instance.new("TextLabel", ScrollingFrame)
+            z.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            z.BackgroundTransparency = 1.000
+            z.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            z.BorderSizePixel = 0
+            z.Size = UDim2.new(0, 206, 0, 34)
+            z.Font = Enum.Font.Unknown
+            z.Text = cmd
+            z.TextColor3 = Color3.fromRGB(255, 255, 255)
+            z.TextSize = 15
+            z.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+            z.TextWrapped = true
+        end
+
+        for _, command in pairs(sexadmin.commands) do
+            newtxtlabel(command.cmdlist)
+        end
+
+        --Properties:
+
+        search.Name = "search"
+        search.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+        search.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+        frame.Name = "frame"
+        frame.Parent = search
+        frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        frame.BackgroundTransparency = 0.500
+        frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        frame.BorderSizePixel = 0
+        frame.LayoutOrder = 1
+        frame.Position = UDim2.new(0.465999991, 0, 0.117518574, 0)
+        frame.Size = UDim2.new(0, 238, 0, 402)
+
+        Frame.Parent = frame
         Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         Frame.BackgroundTransparency = 0.500
         Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
         Frame.BorderSizePixel = 0
-        Frame.Position = UDim2.new(1, -10, 0.948776782, -116)
-        Frame.Size = UDim2.new(0, 269, 0, 133)
-        UICorner.Parent = Frame
-        main.Name = "main"
-        main.Parent = Frame
-        main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        main.BackgroundTransparency = 0.500
-        main.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        main.BorderSizePixel = 0
-        main.Size = UDim2.new(0, 200, 0, 50)
-        main.Font = Enum.Font.SourceSans
-        main.Text = title
-        main.TextColor3 = Color3.fromRGB(255, 255, 255)
-        main.TextScaled = true
-        main.TextSize = 14.000
-        main.TextWrapped = true
-        UICorner_2.Parent = main
-        warn.Name = "warn"
-        warn.Parent = Frame
-        warn.Text = Warn
-        warn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        warn.BackgroundTransparency = 0.500
-        warn.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        warn.BorderSizePixel = 0
-        warn.Position = UDim2.new(0, 0, 0.556391001, 0)
-        warn.Size = UDim2.new(0, 200, 0, 50)
-        warn.Font = Enum.Font.SourceSans
-        warn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        warn.TextScaled = true
-        warn.TextSize = 14.000
-        warn.TextWrapped = true
-        UICorner_3.Parent = warn
-        twe = game.TweenService:Create(Frame, TweenInfo.new(0.25), { Position = UDim2.new(1, -200, 0.948776782, -116) })
-        twe:Play()
-        twe.Completed:Wait()
-        task.wait(time)
-        twe = game.TweenService:Create(Frame, TweenInfo.new(0.25), { Position = UDim2.new(1, -10, 0.948776782, -116) })
-        twe:Play()
-        twe.Completed:Wait(0.5)
-        Frame:Destroy()
+        Frame.LayoutOrder = 1
+        Frame.Position = UDim2.new(0.0179999992, 0, 0.00200000009, 5)
+        Frame.Size = UDim2.new(0, 229, 0, 29)
+
+        Close.Name = "Close"
+        Close.Parent = Frame
+        Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Close.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        Close.BorderSizePixel = 0
+        Close.Position = UDim2.new(0.833590448, 0, 0.2124134, 0)
+        Close.Size = UDim2.new(0, 23, 0, 15)
+        Close.Font = Enum.Font.SourceSansBold
+        Close.Text = "X"
+        Close.TextColor3 = Color3.fromRGB(0, 0, 0)
+        Close.TextSize = 20.000
+        Close.TextWrapped = true
+
+        UICorner.Parent = Close
+
+        background.Name = "background"
+        background.Parent = Frame
+        background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        background.BackgroundTransparency = 0.500
+        background.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        background.BorderSizePixel = 0
+        background.LayoutOrder = 1
+        background.Position = UDim2.new(0, 0, 1.00000155, 0)
+        background.Size = UDim2.new(0, 229, 0, 362)
+
+        UICorner_2.Parent = background
+
+        ScrollingFrame.Parent = Frame
+        ScrollingFrame.Active = true
+        ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        ScrollingFrame.BackgroundTransparency = 0.500
+        ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        ScrollingFrame.BorderSizePixel = 0
+        ScrollingFrame.Position = UDim2.new(0, 0, 1.00000048, 0)
+        ScrollingFrame.Size = UDim2.new(0, 229, 0, 361)
+        ScrollingFrame.CanvasSize = UDim2.new(0, 0, 100, 0)
+        ScrollingFrame.AutomaticCanvasSize = 'Y'
+        ScrollingFrame.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
+
+        UIListLayout.Parent = ScrollingFrame
+        UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+        UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        UIListLayout.Padding = UDim.new(0, 1)
+
+        TextLabel.Parent = Frame
+        TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        TextLabel.BackgroundTransparency = 1.000
+        TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        TextLabel.BorderSizePixel = 0
+        TextLabel.Position = UDim2.new(0.0611353703, 0, 0, 0)
+        TextLabel.Size = UDim2.new(0, 168, 0, 29)
+        TextLabel.Font = Enum.Font.SourceSansBold
+        TextLabel.Text = "SEX ADMIN"
+        TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TextLabel.TextScaled = true
+        TextLabel.TextSize = 14.000
+        TextLabel.TextWrapped = true
+        TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+        USER.Name = "USER"
+        USER.Parent = Frame
+        USER.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        USER.BackgroundTransparency = 1.000
+        USER.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        USER.BorderSizePixel = 0
+        USER.Position = UDim2.new(0, 0, 13.8965521, 0)
+        USER.Size = UDim2.new(0, 72, 0, 29)
+        USER.Font = Enum.Font.SourceSansBold
+        USER.Text = "USER: "
+        USER.TextColor3 = Color3.fromRGB(255, 255, 255)
+        USER.TextScaled = true
+        USER.TextSize = 14.000
+        USER.TextWrapped = true
+        USER.TextXAlignment = Enum.TextXAlignment.Left
+
+        NAME.Name = "NAME"
+        NAME.Parent = Frame
+        NAME.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        NAME.BackgroundTransparency = 1.000
+        NAME.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        NAME.BorderSizePixel = 0
+        NAME.Position = UDim2.new(0.314410478, 0, 14, 0)
+        NAME.Size = UDim2.new(0, 157, 0, 23)
+        NAME.Font = Enum.Font.SourceSansBold
+        NAME.Text = "Name "
+        NAME.TextColor3 = Color3.fromRGB(36, 44, 36)
+        NAME.TextSize = 35.000
+        NAME.TextWrapped = true
+        NAME.TextXAlignment = Enum.TextXAlignment.Left
+
+        UICorner_3.Parent = frame
+
+        -- Scripts:
+
+        local function NTLNW_fake_script() -- Close.LocalScript
+            local script = Instance.new('LocalScript', Close)
+
+            script.Parent.MouseButton1Click:Connect(function()
+                script.Parent.Parent.Parent:Destroy()
+            end)
+        end
+        coroutine.wrap(NTLNW_fake_script)()
+        local function MUCXV_fake_script() -- NAME.LocalScript
+            local script = Instance.new('LocalScript', NAME)
+
+            local Players = game:GetService("Players")
+            local player = Players.LocalPlayer
+
+            local textLabel = script.Parent
+
+            local function updatePlayerName()
+                local playerName = player.Name
+                textLabel.Text = playerName
+
+                local maxLength = 15
+                local fontSize = 18
+
+                if #playerName > maxLength then
+                    fontSize = math.floor(fontSize * maxLength / #playerName)
+                end
+
+                textLabel.TextSize = fontSize
+            end
+
+            updatePlayerName()
+
+            player:GetPropertyChangedSignal("Name"):Connect(updatePlayerName)
+        end
+        coroutine.wrap(MUCXV_fake_script)()
+        local function UZKBXBS_fake_script() -- frame.DragScript
+            local script = Instance.new('LocalScript', frame)
+
+            local UIS = game:GetService('UserInputService')
+            local frame = script.Parent
+            local dragToggle = nil
+            local dragSpeed = 0.25
+            local dragStart = nil
+            local startPos = nil
+
+            local function updateInput(input)
+                local delta = input.Position - dragStart
+                local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale,
+                    startPos.Y.Offset + delta.Y)
+                game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), { Position = position }):Play()
+            end
+
+            frame.InputBegan:Connect(function(input)
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+                    dragToggle = true
+                    dragStart = input.Position
+                    startPos = frame.Position
+                    input.Changed:Connect(function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            dragToggle = false
+                        end
+                    end)
+                end
+            end)
+
+            UIS.InputChanged:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+                    if dragToggle then
+                        updateInput(input)
+                    end
+                end
+            end)
+        end
+        coroutine.wrap(UZKBXBS_fake_script)()
+
+        newtxtlabel("")
+        newtxtlabel("your plugins:")
+        function loadplugs()
+            if isfile("sex admin/auto/Plugins.txt") then
+                z = readfile("sex admin/auto/Plugins.txt")
+                args = z:split(", ")
+                for i, _ in (args) do
+                    newtxtlabel(args[i])
+                end
+            end
+        end
+
+        loadplugs()
+    end
+
+    if not isfile("sex admin") then
+        makefolder("sex admin")
+    end
+
+    if not isfile("sex admin/Plugins") then
+        makefolder("sex admin/Plugins")
+    end
+
+    if not isfile("sex admin/info.txt") then
+        writefile("sex admin/info.txt",
+            "Sex Admin Made By jude_rev., FSD, SKM, And Kosovo!\n\nhttps://discord.gg/HksMhrtZV8")
+    end
+
+    getgenv().rev = "dasdsc23_GotBannxd7"
+
+    function addcmd(name, cmdlistdescription, execute)
+        table.insert(sexadmin.commands, {
+            ["Name"] = name,
+            ["exefunc"] = execute,
+            ["cmdlist"] = cmdlistdescription
+        })
+    end
+
+    -- adding universal commands --
+
+    addcmd("ws|walkspeed", "ws (num)", function(number)
+        game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = number
     end)
-end
 
-function cmdgui()
-    local search = Instance.new("ScreenGui")
-    search.ResetOnSpawn = false
-    local frame = Instance.new("Frame")
-    local Frame = Instance.new("Frame")
-    local Close = Instance.new("TextButton")
-    local UICorner = Instance.new("UICorner")
-    local background = Instance.new("Frame")
-    local UICorner_2 = Instance.new("UICorner")
-    local ScrollingFrame = Instance.new("ScrollingFrame")
-    local UIListLayout = Instance.new("UIListLayout")
-    local TextLabel = Instance.new("TextLabel")
-    local USER = Instance.new("TextLabel")
-    local NAME = Instance.new("TextLabel")
-    local UICorner_3 = Instance.new("UICorner")
+    addcmd("jp|jumppower", "jp (num)", function(number)
+        game.Players.LocalPlayer.Character:WaitForChild("Humanoid").JumpPower = number
+    end)
 
-    function newtxtlabel(cmd)
-        print(cmd)
+    addcmd("view", "view (plr)", function(target)
+        target = getPlayer(target)[1]
+        workspace.CurrentCamera.CameraSubject = target.Character:WaitForChild("Humanoid")
+    end)
 
-        local z = Instance.new("TextLabel", ScrollingFrame)
-        z.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        z.BackgroundTransparency = 1.000
-        z.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        z.BorderSizePixel = 0
-        z.Size = UDim2.new(0, 206, 0, 34)
-        z.Font = Enum.Font.Unknown
-        z.Text = cmd
-        z.TextColor3 = Color3.fromRGB(255, 255, 255)
-        z.TextSize = 15
-        z.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
-        z.TextWrapped = true
-    end
+    addcmd("unview", "unview", function()
+        workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+    end)
 
-    for _,command in pairs(sexadmin.commands) do
-        newtxtlabel(command.cmdlist)
-    end
+    addcmd("cmds", "cmds", function()
+        cmdgui()
+    end)
 
-    --Properties:
+    addcmd("goto", "goto (plr)", function(target)
+        target = getPlayer(target)[1]
+        game.Players.LocalPlayer.Character:PivotTo(target.Character:GetPivot())
+    end)
 
-    search.Name = "search"
-    search.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    search.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    addcmd("re|respawn", "re", function()
+        orgin = game.Players.LocalPlayer.Character:GetPivot()
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+        game.Players.LocalPlayer.CharacterAdded:Wait():WaitForChild("Humanoid")
+        game.Players.LocalPlayer.Character:PivotTo(orgin)
+    end)
 
-    frame.Name = "frame"
-    frame.Parent = search
-    frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    frame.BackgroundTransparency = 0.500
-    frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    frame.BorderSizePixel = 0
-    frame.LayoutOrder = 1
-    frame.Position = UDim2.new(0.465999991, 0, 0.117518574, 0)
-    frame.Size = UDim2.new(0, 238, 0, 402)
+    -- Setting Up Command Execution. --
 
-    Frame.Parent = frame
-    Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    Frame.BackgroundTransparency = 0.500
-    Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Frame.BorderSizePixel = 0
-    Frame.LayoutOrder = 1
-    Frame.Position = UDim2.new(0.0179999992, 0, 0.00200000009, 5)
-    Frame.Size = UDim2.new(0, 229, 0, 29)
-
-    Close.Name = "Close"
-    Close.Parent = Frame
-    Close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Close.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Close.BorderSizePixel = 0
-    Close.Position = UDim2.new(0.833590448, 0, 0.2124134, 0)
-    Close.Size = UDim2.new(0, 23, 0, 15)
-    Close.Font = Enum.Font.SourceSansBold
-    Close.Text = "X"
-    Close.TextColor3 = Color3.fromRGB(0, 0, 0)
-    Close.TextSize = 20.000
-    Close.TextWrapped = true
-
-    UICorner.Parent = Close
-
-    background.Name = "background"
-    background.Parent = Frame
-    background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    background.BackgroundTransparency = 0.500
-    background.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    background.BorderSizePixel = 0
-    background.LayoutOrder = 1
-    background.Position = UDim2.new(0, 0, 1.00000155, 0)
-    background.Size = UDim2.new(0, 229, 0, 362)
-
-    UICorner_2.Parent = background
-
-    ScrollingFrame.Parent = Frame
-    ScrollingFrame.Active = true
-    ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    ScrollingFrame.BackgroundTransparency = 0.500
-    ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    ScrollingFrame.BorderSizePixel = 0
-    ScrollingFrame.Position = UDim2.new(0, 0, 1.00000048, 0)
-    ScrollingFrame.Size = UDim2.new(0, 229, 0, 361)
-    ScrollingFrame.CanvasSize = UDim2.new(0, 0, 100, 0)
-    ScrollingFrame.AutomaticCanvasSize = 'Y'
-    ScrollingFrame.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
-
-    UIListLayout.Parent = ScrollingFrame
-    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 1)
-
-    TextLabel.Parent = Frame
-    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.BackgroundTransparency = 1.000
-    TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    TextLabel.BorderSizePixel = 0
-    TextLabel.Position = UDim2.new(0.0611353703, 0, 0, 0)
-    TextLabel.Size = UDim2.new(0, 168, 0, 29)
-    TextLabel.Font = Enum.Font.SourceSansBold
-    TextLabel.Text = "SEX ADMIN"
-    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.TextScaled = true
-    TextLabel.TextSize = 14.000
-    TextLabel.TextWrapped = true
-    TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-
-    USER.Name = "USER"
-    USER.Parent = Frame
-    USER.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    USER.BackgroundTransparency = 1.000
-    USER.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    USER.BorderSizePixel = 0
-    USER.Position = UDim2.new(0, 0, 13.8965521, 0)
-    USER.Size = UDim2.new(0, 72, 0, 29)
-    USER.Font = Enum.Font.SourceSansBold
-    USER.Text = "USER: "
-    USER.TextColor3 = Color3.fromRGB(255, 255, 255)
-    USER.TextScaled = true
-    USER.TextSize = 14.000
-    USER.TextWrapped = true
-    USER.TextXAlignment = Enum.TextXAlignment.Left
-
-    NAME.Name = "NAME"
-    NAME.Parent = Frame
-    NAME.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    NAME.BackgroundTransparency = 1.000
-    NAME.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    NAME.BorderSizePixel = 0
-    NAME.Position = UDim2.new(0.314410478, 0, 14, 0)
-    NAME.Size = UDim2.new(0, 157, 0, 23)
-    NAME.Font = Enum.Font.SourceSansBold
-    NAME.Text = "Name "
-    NAME.TextColor3 = Color3.fromRGB(36,44,36)
-    NAME.TextSize = 35.000
-    NAME.TextWrapped = true
-    NAME.TextXAlignment = Enum.TextXAlignment.Left
-
-    UICorner_3.Parent = frame
-
-    -- Scripts:
-
-    local function NTLNW_fake_script() -- Close.LocalScript
-        local script = Instance.new('LocalScript', Close)
-
-        script.Parent.MouseButton1Click:Connect(function()
-            script.Parent.Parent.Parent:Destroy()
-        end)
-    end
-    coroutine.wrap(NTLNW_fake_script)()
-    local function MUCXV_fake_script() -- NAME.LocalScript
-        local script = Instance.new('LocalScript', NAME)
-
-        local Players = game:GetService("Players")
-        local player = Players.LocalPlayer
-
-        local textLabel = script.Parent
-
-        local function updatePlayerName()
-            local playerName = player.Name
-            textLabel.Text = playerName
-
-            local maxLength = 15
-            local fontSize = 18
-
-            if #playerName > maxLength then
-                fontSize = math.floor(fontSize * maxLength / #playerName)
-            end
-
-            textLabel.TextSize = fontSize
-        end
-
-        updatePlayerName()
-
-        player:GetPropertyChangedSignal("Name"):Connect(updatePlayerName)
-    end
-    coroutine.wrap(MUCXV_fake_script)()
-    local function UZKBXBS_fake_script() -- frame.DragScript
-        local script = Instance.new('LocalScript', frame)
-
-        local UIS = game:GetService('UserInputService')
-        local frame = script.Parent
-        local dragToggle = nil
-        local dragSpeed = 0.25
-        local dragStart = nil
-        local startPos = nil
-
-        local function updateInput(input)
-            local delta = input.Position - dragStart
-            local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-            game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), { Position = position }):Play()
-        end
-
-        frame.InputBegan:Connect(function(input)
-            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-                dragToggle = true
-                dragStart = input.Position
-                startPos = frame.Position
-                input.Changed:Connect(function()
-                    if input.UserInputState == Enum.UserInputState.End then
-                        dragToggle = false
-                    end
-                end)
-            end
-        end)
-
-        UIS.InputChanged:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-                if dragToggle then
-                    updateInput(input)
-                end
-            end
-        end)
-    end
-    coroutine.wrap(UZKBXBS_fake_script)()
-
-    newtxtlabel("")
-    newtxtlabel("your plugins:")
-    function loadplugs()
-        if isfile("sex admin/auto/Plugins.txt") then
-            z = readfile("sex admin/auto/Plugins.txt")
-            args = z:split(", ")
-            for i, _ in (args) do
-                newtxtlabel(args[i])
-            end
-        end
-    end
-
-    loadplugs()
-end
-
-if not isfile("sex admin") then
-    makefolder("sex admin")
-end
-
-if not isfile("sex admin/Plugins") then
-    makefolder("sex admin/Plugins")
-end
-
-if not isfile("sex admin/info.txt") then
-    writefile("sex admin/info.txt", "Sex Admin Made By jude_rev., FSD, SKM, And Kosovo!\n\nhttps://discord.gg/HksMhrtZV8")
-end
-
-getgenv().rev = "dasdsc23_GotBannxd7"
-
-function addcmd(name,cmdlistdescription,execute)
-    table.insert(sexadmin.commands, {
-        ["Name"] = name,
-        ["exefunc"] = execute,
-        ["cmdlist"] = cmdlistdescription
-    })
-end
-
-
-
--- adding universal commands --
-
-addcmd("ws|walkspeed","ws (num)",function(number)
-    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = number
-end)
-
-addcmd("jp|jumppower","jp (num)",function(number)
-    game.Players.LocalPlayer.Character:WaitForChild("Humanoid").JumpPower = number
-end)
-
-addcmd("view","view (plr)",function(target)
-    target = getPlayer(target)[1]
-    workspace.CurrentCamera.CameraSubject = target.Character:WaitForChild("Humanoid")
-end)
-
-addcmd("unview","unview",function()
-    workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-end)
-
-addcmd("cmds","cmds",function()
-    cmdgui()
-end)
-
-addcmd("goto","goto (plr)",function(target)
-    target = getPlayer(target)[1]
-    game.Players.LocalPlayer.Character:PivotTo(target.Character:GetPivot())
-end)
-
-addcmd("re|respawn","re",function()
-    orgin = game.Players.LocalPlayer.Character:GetPivot()
-    game.Players.LocalPlayer.Character.Humanoid.Health = 0
-    game.Players.LocalPlayer.CharacterAdded:Wait():WaitForChild("Humanoid")
-    game.Players.LocalPlayer.Character:PivotTo(orgin)
-end)
-
--- Setting Up Command Execution. --
-
--- First Is The Command Bar. --
-local cmdbar = Instance.new("ScreenGui")
-local TextBox = Instance.new("TextBox")
-cmdbar.Name = "cmd bar"
-cmdbar.Enabled = false
-cmdbar.ResetOnSpawn = false
-cmdbar.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-cmdbar.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-TextBox.Parent = cmdbar
-TextBox.AnchorPoint = Vector2.new(0.5, 0.5)
-TextBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-TextBox.BackgroundTransparency = 1
-TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TextBox.BorderSizePixel = 0
-TextBox.Position = UDim2.new(0.5, 0, 0.8, 0)
-TextBox.Size = UDim2.new(0, 300, 0, 50)
-TextBox.Font = Enum.Font.SourceSans
-TextBox.Text = ""
-TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-TextBox.TextScaled = true
-TextBox.TextSize = 14.000
-TextBox.TextWrapped = true
-
-function hide()
-    e = game.TweenService:Create(TextBox, TweenInfo.new(0.25), { Transparency = 1 })
-    e:Play()
-    e.Completed:Wait()
+    -- First Is The Command Bar. --
+    local cmdbar = Instance.new("ScreenGui")
+    local TextBox = Instance.new("TextBox")
+    cmdbar.Name = "cmd bar"
     cmdbar.Enabled = false
-end
+    cmdbar.ResetOnSpawn = false
+    cmdbar.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    cmdbar.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    TextBox.Parent = cmdbar
+    TextBox.AnchorPoint = Vector2.new(0.5, 0.5)
+    TextBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    TextBox.BackgroundTransparency = 1
+    TextBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    TextBox.BorderSizePixel = 0
+    TextBox.Position = UDim2.new(0.5, 0, 0.8, 0)
+    TextBox.Size = UDim2.new(0, 300, 0, 50)
+    TextBox.Font = Enum.Font.SourceSans
+    TextBox.Text = ""
+    TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextBox.TextScaled = true
+    TextBox.TextSize = 14.000
+    TextBox.TextWrapped = true
 
-TextBox.FocusLost:Connect(function(eP, inp)
-    hide()
-    if eP then
-        local txt = TextBox.ContentText
-        local args = txt:split(" ")
-        local cmd = args[1]
+    function hide()
+        e = game.TweenService:Create(TextBox, TweenInfo.new(0.25), { Transparency = 1 })
+        e:Play()
+        e.Completed:Wait()
+        cmdbar.Enabled = false
+    end
 
-        TextBox.Text = ""
+    TextBox.FocusLost:Connect(function(eP, inp)
+        hide()
+        if eP then
+            local txt = TextBox.ContentText
+            local args = txt:split(" ")
+            local cmd = args[1]
 
-        for _, v in pairs(sexadmin.plugins) do
-            if cmd == v then
-                if args[2] ~= nil then
-                    Who = args[2]
-                    Target = getPlayer(Who)[1]
-                    target = getPlayer(Who)[1]
-                end
+            TextBox.Text = ""
 
-                if isfile("sex admin/Plugins/" .. v .. "") then
-                    loadstring(readfile("sex admin/Plugins/" .. v .. ""))()
-                elseif isfile("sex admin/Plugins/" .. v .. ".txt") then
-                    loadstring(readfile("sex admin/Plugins/" .. v .. ".txt"))()
-                else
-                    loadstring(readfile("sex admin/Plugins/" .. v .. ".lua"))()
+            for _, v in pairs(sexadmin.plugins) do
+                if cmd == v then
+                    if args[2] ~= nil then
+                        Who = args[2]
+                        Target = getPlayer(Who)[1]
+                        target = getPlayer(Who)[1]
+                    end
+
+                    if isfile("sex admin/Plugins/" .. v .. "") then
+                        loadstring(readfile("sex admin/Plugins/" .. v .. ""))()
+                    elseif isfile("sex admin/Plugins/" .. v .. ".txt") then
+                        loadstring(readfile("sex admin/Plugins/" .. v .. ".txt"))()
+                    else
+                        loadstring(readfile("sex admin/Plugins/" .. v .. ".lua"))()
+                    end
                 end
             end
-        end
 
-        for _,command in(sexadmin.commands) do
-            local commandnames = command.Name:split("|")
-            for _, diffname in(commandnames) do
-                if diffname == cmd then
-                    if args[2] ~= nil and args[3] ~= nil then
-                        command.exefunc(args[2],args[3])
-                    elseif args[2] ~= nil and args[3] == nil then
-                        command.exefunc(args[2])
-                    elseif args[2] == nil then
-                        command.exefunc()
+            for _, command in (sexadmin.commands) do
+                local commandnames = command.Name:split("|")
+                for _, diffname in (commandnames) do
+                    if diffname == cmd then
+                        if args[2] ~= nil and args[3] ~= nil then
+                            command.exefunc(args[2], args[3])
+                        elseif args[2] ~= nil and args[3] == nil then
+                            command.exefunc(args[2])
+                        elseif args[2] == nil then
+                            command.exefunc()
+                        end
                     end
                 end
             end
         end
+    end)
 
+
+    function focus()
+        wait()
+        cmdbar.Enabled = true
+        e = game.TweenService:Create(TextBox, TweenInfo.new(0.25), { Transparency = 0.5 })
+        e:Play()
+        TextBox:CaptureFocus()
     end
-end)
 
-
-function focus()
-    wait()
-    cmdbar.Enabled = true
-    e = game.TweenService:Create(TextBox, TweenInfo.new(0.25), { Transparency = 0.5 })
-    e:Play()
-    TextBox:CaptureFocus()
-end
-
-local UIS = game:GetService("UserInputService")
-UIS.InputBegan:Connect(function(input, chting)
-    if input.KeyCode == getgenv().cmdbarprefix and not chting then
-        focus()
-    end
-end)
-
--- Next Is The Chat. --
-
-
-lastchattedtime = 5;
-game.Players.LocalPlayer.Chatted:Connect(function(msg)
-    if (tick() - lastchattedtime) < 0.7 then return end
-    lastchattedtime = tick()
-    if string.sub(msg, 1, 3) == "/e " then
-        msg = string.sub(msg, 4)
-    end
-    if string.sub(msg, 1, 1) == getgenv().selectedprefix then
-        local cmd
-        local space = string.find(msg, " ")
-        if space then
-            cmd = string.sub(msg, 2, space - 1)
-        else
-            cmd = string.sub(msg, 2)
+    local UIS = game:GetService("UserInputService")
+    UIS.InputBegan:Connect(function(input, chting)
+        if input.KeyCode == getgenv().cmdbarprefix and not chting then
+            focus()
         end
+    end)
 
-        local args = msg:split(" ")
-        for _, v in pairs(sexadmin.plugins) do
-            if cmd == v then
-                if args[2] ~= nil then
-                    Who = args[2]
-                    Target = getPlayer(Who)[1]
-                    target = getPlayer(Who)[1]
-                end
+    -- Next Is The Chat. --
 
-                if isfile("sex admin/Plugins/" .. v .. "") then
-                    loadstring(readfile("sex admin/Plugins/" .. v .. ""))()
-                elseif isfile("sex admin/Plugins/" .. v .. ".txt") then
-                    loadstring(readfile("sex admin/Plugins/" .. v .. ".txt"))()
-                else
-                    loadstring(readfile("sex admin/Plugins/" .. v .. ".lua"))()
+
+    lastchattedtime = 5;
+    game.Players.LocalPlayer.Chatted:Connect(function(msg)
+        if (tick() - lastchattedtime) < 0.7 then return end
+        lastchattedtime = tick()
+        if string.sub(msg, 1, 3) == "/e " then
+            msg = string.sub(msg, 4)
+        end
+        if string.sub(msg, 1, 1) == getgenv().selectedprefix then
+            local cmd
+            local space = string.find(msg, " ")
+            if space then
+                cmd = string.sub(msg, 2, space - 1)
+            else
+                cmd = string.sub(msg, 2)
+            end
+
+            local args = msg:split(" ")
+            for _, v in pairs(sexadmin.plugins) do
+                if cmd == v then
+                    if args[2] ~= nil then
+                        Who = args[2]
+                        Target = getPlayer(Who)[1]
+                        target = getPlayer(Who)[1]
+                    end
+
+                    if isfile("sex admin/Plugins/" .. v .. "") then
+                        loadstring(readfile("sex admin/Plugins/" .. v .. ""))()
+                    elseif isfile("sex admin/Plugins/" .. v .. ".txt") then
+                        loadstring(readfile("sex admin/Plugins/" .. v .. ".txt"))()
+                    else
+                        loadstring(readfile("sex admin/Plugins/" .. v .. ".lua"))()
+                    end
                 end
             end
-        end
 
-        for _,command in(sexadmin.commands) do
-            local commandnames = command.Name:split("|")
-            for _, diffname in(commandnames) do
-                if diffname == cmd then
-                    if args[2] ~= nil and args[3] ~= nil then
-                        command.exefunc(args[2],args[3])
-                    elseif args[2] ~= nil and args[3] == nil then
-                        command.exefunc(args[2])
-                    elseif args[2] == nil then
-                        command.exefunc()
+            for _, command in (sexadmin.commands) do
+                local commandnames = command.Name:split("|")
+                for _, diffname in (commandnames) do
+                    if diffname == cmd then
+                        if args[2] ~= nil and args[3] ~= nil then
+                            command.exefunc(args[2], args[3])
+                        elseif args[2] ~= nil and args[3] == nil then
+                            command.exefunc(args[2])
+                        elseif args[2] == nil then
+                            command.exefunc()
+                        end
                     end
                 end
             end
         end
+    end)
 
+    -- Done Setting Up Command Execution. --
+
+
+    local howmanybasecmds = 0
+    for _, v in (sexadmin.commands) do
+        howmanybasecmds += 1
     end
-end)
-
--- Done Setting Up Command Execution. -- 
-
-
-local howmanybasecmds = 0
-for _,v in(sexadmin.commands) do
-    howmanybasecmds += 1
+    local howmanyplugins = 0
+    for _, v in (sexadmin.plugins) do
+        howmanyplugins += 1
+    end
+    print("there are " .. howmanybasecmds .. "base cmds..")
+    print("there are " .. howmanyplugins .. " plugins loaded..")
 end
-local howmanyplugins = 0
-for _,v in(sexadmin.plugins) do
-    howmanyplugins += 1
-end
-print("there are " .. howmanybasecmds .. "base cmds..")
-print("there are " ..howmanyplugins.. " plugins loaded..")
