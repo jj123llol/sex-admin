@@ -4,11 +4,11 @@ This Is The Base Of Sex Admin, It Makes My Life ALOT Easier.
 Developed By Jude/Rev<3
 ]]
 
-
 getgenv().sexadmin = {
     executed = false,
     commands = {},
-    plugins = {}
+    plugins = {},
+    loopsnshit = {}
 }
 if sexadmin.executed then
     return
@@ -381,7 +381,6 @@ else
     end
 
     getgenv().rev = "dasdsc23_GotBannxd7"
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/jj123llol/My-personal-admin/main/z",true))()
 
     function addcmd(name, cmdlistdescription, execute)
         table.insert(sexadmin.commands, {
@@ -390,6 +389,33 @@ else
             ["cmdlist"] = cmdlistdescription
         })
     end
+
+    -- Keep Track Of Respawn Times (FSD made this part!!) --
+    local RespawnTimes = {}
+
+    game:GetService("Players").PlayerAdded:Connect(function(Player)
+        RespawnTimes[Player] = tick();
+    
+        Player.CharacterAdded:Connect(function()
+            RespawnTimes[Player] = tick();
+        end);
+    end)
+    
+    game:GetService("Players").PlayerRemoving:Connect(function(Player)
+        if RespawnTimes[Player] then
+            RespawnTimes[Player] = nil
+        end
+    end)
+    
+    for _, Player in pairs(game:GetService("Players"):GetPlayers()) do
+        RespawnTimes[Player] = tick();
+    
+        Player.CharacterAdded:Connect(function()
+            RespawnTimes[Player] = tick();
+        end);
+    end
+
+    -- --
 
     -- adding universal commands --
 
@@ -402,7 +428,7 @@ else
     end)
 
     addcmd("view", "view (plr)", function(target)
-        target = getPlayer(target)[1]
+        local target = getPlayer(target)[1]
         workspace.CurrentCamera.CameraSubject = target.Character:WaitForChild("Humanoid")
     end)
 
@@ -415,9 +441,24 @@ else
     end)
 
     addcmd("goto", "goto (plr)", function(target)
-        target = getPlayer(target)[1]
+        local target = getPlayer(target)[1]
         game.Players.LocalPlayer.Character:PivotTo(target.Character:GetPivot())
     end)
+
+    addcmd("loopgoto", "loopgoto (plr)", function(target)
+        local target = getPlayer(target)[1]
+        sexadmin.loopsnshit.loopgoto = game:GetService("RunService").Heartbeat:Connect(function()
+            game.Players.LocalPlayer.Character:PivotTo(target.Character:GetPivot())
+        end)
+    end)
+
+    addcmd("unloopgoto", "unloopgoto", function()
+        if sexadmin.loopsnshit.loopgoto then
+            sexadmin.loopsnshit.loopgoto:Disconnect()
+            sexadmin.loopsnshit.loopgoto = nil
+        end
+    end)
+
 
     addcmd("re|respawn", "re", function()
         orgin = game.Players.LocalPlayer.Character:GetPivot()
@@ -560,11 +601,11 @@ else
                 local commandnames = command.Name:split("|")
                 for _, diffname in (commandnames) do
                     if diffname == cmd then
-                        if args[2] ~= nil and args[3] ~= nil then
+                        if args[2] ~= nil or " " and args[3] ~= nil or " " then
                             command.exefunc(args[2], args[3])
-                        elseif args[2] ~= nil and args[3] == nil then
+                        elseif args[2] ~= nil or " " and args[3] == nil or " " then
                             command.exefunc(args[2])
-                        elseif args[2] == nil then
+                        elseif args[2] == nil or " " then
                             command.exefunc()
                         end
                     end
@@ -584,6 +625,6 @@ else
     for _, v in (sexadmin.plugins) do
         howmanyplugins += 1
     end
-    print("there are " .. howmanybasecmds .. "base cmds..")
+    print("there are " .. howmanybasecmds .. " base cmds..")
     print("there are " .. howmanyplugins .. " plugins loaded..")
 end
