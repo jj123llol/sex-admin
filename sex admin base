@@ -4,10 +4,6 @@ This Is The Base Of Sex Admin, It Makes My Life ALOT Easier.
 Developed By Jude/Rev<3
 ]]
 
-getgenv().selectedprefix = ">"              -- use ;, : , / , etc.
-
-getgenv().cmdbarprefix = Enum.KeyCode.Minus -- https://create.roblox.com/docs/en-us/reference/engine/enums/KeyCode
-
 if identifyexecutor():lower():find("solara") then 
     local fti = {}
     game:GetService("RunService").Heartbeat:Connect(function()
@@ -57,7 +53,8 @@ getgenv().sexadmin = {
     executed = false,
     commands = {},
     plugins = {},
-    loopsnshit = {}
+    loopsnshit = {},
+    rt = {}
 }
 if sexadmin.executed then
     return
@@ -440,27 +437,26 @@ else
     end
 
     -- Keep Track Of Respawn Times (FSD made this part!!) --
-    local RespawnTimes = {}
 
     game:GetService("Players").PlayerAdded:Connect(function(Player)
-        RespawnTimes[Player] = tick();
+        sexadmin.rt[Player] = tick();
     
         Player.CharacterAdded:Connect(function()
-            RespawnTimes[Player] = tick();
+            sexadmin.rt[Player] = tick();
         end);
     end)
     
     game:GetService("Players").PlayerRemoving:Connect(function(Player)
-        if RespawnTimes[Player] then
-            RespawnTimes[Player] = nil
+        if sexadmin.rt[Player] then
+            sexadmin.rt[Player] = nil
         end
     end)
     
     for _, Player in pairs(game:GetService("Players"):GetPlayers()) do
-        RespawnTimes[Player] = tick();
+        sexadmin.rt[Player] = tick();
     
         Player.CharacterAdded:Connect(function()
-            RespawnTimes[Player] = tick();
+            sexadmin.rt[Player] = tick();
         end);
     end
 
@@ -677,4 +673,3 @@ else
     print("there are " .. howmanybasecmds .. " base cmds..")
     print("there are " .. howmanyplugins .. " plugins loaded..")
 end
-
