@@ -239,10 +239,421 @@ seat
 
 autounsit / unautounsit
 
--- This isint all of them --
--- This isint all of them --
--- This isint all of them --
--- This isint all of them --
--- This isint all of them --
 
-I dont have time to add more rn
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/12565883250/Adopt-A-Kid
+
+givemoney (num)
+
+setmoney (num)
+
+banlands (plr)
+
+fling (plr)
+
+tp (plr1) (plr2)
+
+bald (plr)
+
+black (plr)
+
+white (plr)
+
+bring (plr)
+
+rocket (plr)
+
+void (plr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/192800/Work-At-A-Pizza-Place
+
+island (plr)
+
+kill (plr)
+
+bring (plr)
+
+skydive (plr)
+
+becomemanager
+
+kick (plr)
+
+resetvotes
+
+banlands (plr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/16276623981/Find-The-Flags-240
+
+
+nobaseplate
+
+bald (plr)
+
+kick (plr)
+
+noclothes (plr)
+
+remhumanoid (plr)
+
+nohrp (plr)
+
+kill (plr)
+
+nolimbs (plr)
+
+half (plr)
+
+shutdown
+
+btools
+
+ban (plr) / unban (plr)
+
+lockserver / unlockserver
+
+stun (plr) / unstun (plr)
+
+jump (plr)
+
+loopjump (plr) / unloopjump (plr)
+
+unanchorall
+
+getpasses
+
+bodyswap (plr)
+
+kill2 (plr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/18274537645/Find-The-Football-Clubs-100
+
+
+nobaseplate
+
+bald (plr)
+
+kick (plr)
+
+noclothes (plr)
+
+remhumanoid (plr)
+
+nohrp (plr)
+
+kill (plr)
+
+nolimbs (plr)
+
+half (plr)
+
+shutdown
+
+btools
+
+ban (plr) / unban (plr)
+
+lockserver / unlockserver
+
+stun (plr) / unstun (plr)
+
+jump (plr)
+
+loopjump (plr) / unloopjump (plr)
+
+unanchorall
+
+getpasses
+
+bodyswap (plr)
+
+kill2 (plr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/11196588443/Zombie-Merge-Tycoon
+
+
+
+pickupmoney
+
+getsamples
+
+sellsamples
+
+killboss
+
+kill (plr)
+
+loopkill (plr) / unloopkill (plr)
+
+killeverything
+
+killzombies
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/3554069044/Live-Life-Rich-And-Famous-in-Paradise
+-- Damn thats a long name..
+
+kill (plr)
+
+nobaseplate
+
+kick (plr)
+
+shutdown
+
+btools
+
+drophats (num) -- Make Your Own Scripts To Go With This One If You Want ;), Dropping Hats Was Patched Long Ago After All.
+
+clone (plr)
+
+korblox (plr)
+
+cripple (plr)
+
+nohum (plr)
+
+nolegs (plr)
+
+noarms (plr)
+
+nolimbs (plr)
+
+bald (plr)
+
+noclothes (plr)
+
+gear (id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/8908228901/Sharbite-2
+-- This Script Off The Admin Was Fully Made By Kosovo --
+
+sharkcharms
+
+boatgui
+
+killall -- for when your shark
+
+decreaselag
+
+day
+
+night
+
+autofarm / autofarmoff
+
+esp
+
+nofog
+
+lobby
+
+sharktunnel
+
+island1
+
+island2
+
+bigisland
+
+cargo
+
+safeafk
+
+uselessoxygen
+
+nomines
+
+refreshsharkchance
+
+refreshhealth
+
+godmode
+
+fakeadmin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/13864661000-Break-In-2-Story
+
+-- Sometimes These Commands Wont Work Properly, They Will Be A Few Seconds Delayed When You Execute Them. --
+
+btools
+
+kill (plr)
+
+bald (plr)
+
+kick (plr)
+
+noclothes (plr)
+
+remhumanoid (plr)
+
+nohrp (plr)
+
+-- These Ones Are Garunteed to Work --
+
+getmedkit (num)
+
+getpizza (num)
+
+getapple (num)
+
+getcookie (num)
+
+getchips (num)
+
+getexpiredcola (num)
+
+getcola (num)
+
+getrainbowpizza (num)
+
+getrainbowbox (num)
+
+maxstats
+
+savedog
+
+getmouse
+
+getgoldpizza (num)
+
+getnpcs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NEW GAME //
+https://www.roblox.com/games/621129760/KAT
+
+
+goto (plr)
+
+disarm (plr)
+
+play (songid)
+
+kill (plr) -- Buggy
+
+GunMods -- Executor Must Support GetGc
